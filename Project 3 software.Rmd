@@ -1,3 +1,11 @@
+---
+title: "Project 3 Software"
+author: "Neil Hodgkinson, Bridget Boakye, Wilson Ng, Marjete Vucinaj"
+date: "2022-10-19"
+output: html_document
+---
+
+
 ```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 
