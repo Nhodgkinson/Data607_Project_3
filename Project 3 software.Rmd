@@ -1,0 +1,36 @@
+---
+title: "Project 3 Software"
+author: "Neil Hodgkinson"
+date: "2022-10-19"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyr)
+library(dplyr)
+library(readr)
+library(stringr)
+library(ggplot2)
+
+urlfile="https://raw.githubusercontent.com/Nhodgkinson/Data607_Project_3/main/Copy%20of%20Data%20Science%20Career%20Terms%20-%20ds%20software.csv"
+
+sfdf<-read_csv(url(urlfile))
+
+sfdf<-sfdf[,c(1:5)] #remove columns right of column 5
+
+sfdf<-sfdf[-c(38:42),] #Remove bottom 5 columns
+```
+
+##
+
+```{r }
+total <- rowSums(sfdf[,c(2:5)]) #sums row values starting from column 2. Gives us total number hits for each keyword by site
+
+sfdf$total<-total #makes total value a column
+
+
+
+```
+
