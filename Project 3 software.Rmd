@@ -1,5 +1,5 @@
 ---
-title: "Project 3 Software"
+title: "Project 3 Clean up"
 author: "Neil Hodgkinson, Bridget Boakye, Wilson Ng, Marjete Vucinaj"
 date: "2022-10-19"
 output: html_document
