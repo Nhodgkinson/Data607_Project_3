@@ -1,6 +1,6 @@
 ---
-title: "Project 3 Software"
-author: "Neil Hodgkinson"
+title: "Project 3 cleaning"
+author: "Neil Hodgkinson, Bridget Boakye, Wilson Ng, Marjete Vucinaj"
 date: "2022-10-19"
 output: html_document
 ---
