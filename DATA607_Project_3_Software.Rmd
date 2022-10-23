@@ -1,0 +1,50 @@
+---
+title: "DATA607_Project_3_Software"
+author: "Wilson Ng, Bridget Boakye, Neil Hodgkinson, Marjete Vucinaj"
+date: "2022-10-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+## Pulling in data that was cleaned by a team mate 
+
+```{r}
+software_data <- read.csv("https://raw.githubusercontent.com/Nhodgkinson/Data607_Project_3/main/software.csv")
+
+software_data <- software_data %>% rename_at("total", ~"mentions_across_all_sites")
+
+software_data
+```
+## Calculating the proportion of "software" keywords per each job site.
+
+```{r}
+software_data %>%
+  transmute(
+    Keyword = Keyword,
+    linkedin_proportion = round(LinkedIn / sum(LinkedIn), 3),
+    indeed_proportion = round(Indeed / sum(Indeed), 3),
+    simplyhired_proportion = round(SimplyHired / sum(SimplyHired), 3),
+    monster_proportion = round(Monster / sum(Monster), 3)
+    )
+```
+## Calculating the proportion of keyword mentions across all job sites
+
+```{r}
+software_data %>%
+  transmute(
+    Keyword = Keyword,
+    mentions_proportion = round(mentions_across_all_sites / sum(mentions_across_all_sites), 3)
+    )
+```
+
+
+
+
+
+
