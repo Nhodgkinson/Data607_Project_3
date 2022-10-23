@@ -11,8 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyr)
 library(dplyr)
 library(readr)
-library(stringr)
-library(ggplot2)
 
 urlfile="https://raw.githubusercontent.com/Nhodgkinson/Data607_Project_3/main/Copy%20of%20Data%20Science%20Career%20Terms%20-%20ds%20software.csv"
 
