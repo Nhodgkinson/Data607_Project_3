@@ -1,0 +1,102 @@
+---
+title: "Data 607 Project 3"
+authors: "Bridget Boakye, Wilson Ng, Neil Hodgkinson, Marjete Vucinaj"
+output: html_notebook
+---
+
+*Introduction: in this notebook, we download and analyse the data science skills dataset with the motivation to understand the skills of most value in the industry.*
+
+1. Download packages 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+2. Read the cleaned Skills.csv from GitHub
+
+```{r upload-data}
+
+url <- 'https://raw.githubusercontent.com/Nhodgkinson/Data607_Project_3/main/skills.csv'
+skills_data <- read.csv(file = url)
+
+skills_data
+
+```
+
+3. Rename the total column to mentions across all sites
+
+```{r rename-total-column}
+
+skills_data <- skills_data %>% rename_at("total2", ~"mentions_across_all_sites")
+
+skills_data
+
+```
+4a. Find proportion of data science "skills" keywords per each job site 
+
+```{r proportion-per-job-site}
+
+skills_props_site <- skills_data %>%
+  transmute(
+    Keyword = Keyword,
+    linkedin_proportion = round(LinkedIn / sum(LinkedIn), 3),
+    indeed_proportion = round(Indeed / sum(Indeed), 3),
+    simplyhired_proportion = round(SimplyHired / sum(SimplyHired), 3),
+    monster_proportion = round(Monster / sum(Monster), 3)
+    )
+
+skills_props_site
+
+```
+
+
+4b.  Graph the top 10 data science skills for each all website using the father fuction in dplyr
+  
+```{r plot-per-website}
+
+skillsdatalong <- gather(skills_props_site, key="measure", value="value",   
+c("linkedin_proportion", "indeed_proportion", "simplyhired_proportion", "monster_proportion"))
+
+skillsdatalong$Keyword<- factor(skillsdatalong$Keyword, levels= skills_props_site$Keyword[order(skills_props_site$linkedin_proportion)])
+
+ggplot(skillsdatalong, aes(x=Keyword, y=value))+
+  geom_bar(stat='identity', fill="forest green")+
+  facet_wrap(~measure) +
+  theme(axis.text.x = element_text(angle = 90, size = 6))
+```
+
+5a. Find proportion of skills keywords mentions across all the sites and save into a dataframe called total
+
+```{r proportion-across-all-sites}
+
+total<-skills_data %>%
+  transmute(
+    Keyword = Keyword,
+    mentions_proportion = round(mentions_across_all_sites / sum(mentions_across_all_sites), 3)
+    )
+print(total)
+```
+
+5b. Graph top 10 data science skills across all websites by first filtering for the first 10 then creating a plot of that dataframe
+
+```{r} 
+#created a dataframe to reflect the top 10 softwares
+top.10 <- filter(total, mentions_proportion > 0.035)
+top.10
+```
+
+```{r plot-across-websites}
+
+ggplot(top.10, aes(x = reorder(Keyword,-mentions_proportion), y = mentions_proportion))+
+  geom_bar(stat="identity", width = .7, fill=("blue"))+
+  labs(
+    title = "Top Skills in Job Listings for Data Science Across All Websites",
+    x = "Skills",
+    y = "Proportion of Skills, all Websites") +
+  theme(axis.text.x = element_text(angle = 65, vjust=0.6)) 
+
+```
+*Conclusion: across websites, analysis, machine learning, and statistics are the top 3 skills listed in job postings with analysis being #1. On each website, the top 3 skills remain the same as the top 3 across all websites but there is some variation in #1 skillfor each website. The top skill is analysis on Simply Hired, Monster, and Indeed, and machine learning on LinkedIn. Job seekers who have especially strong skills in machine learning may want to priorritise LinkedIn for their job search.*
