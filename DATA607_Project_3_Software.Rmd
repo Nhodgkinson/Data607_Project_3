@@ -24,7 +24,7 @@ software_data
 ## Calculating the proportion of "software" keywords per each job site.
 
 ```{r}
-software_data %>%
+software_props_site <- software_data %>%
   transmute(
     Keyword = Keyword,
     linkedin_proportion = round(LinkedIn / sum(LinkedIn), 3),
@@ -32,15 +32,30 @@ software_data %>%
     simplyhired_proportion = round(SimplyHired / sum(SimplyHired), 3),
     monster_proportion = round(Monster / sum(Monster), 3)
     )
+
+software_props_site
 ```
 ## Calculating the proportion of keyword mentions across all job sites
 
 ```{r}
-software_data %>%
+software_props_sites <- software_data %>%
   transmute(
     Keyword = Keyword,
     mentions_proportion = round(mentions_across_all_sites / sum(mentions_across_all_sites), 3)
     )
+
+software_props_sites
+```
+```{r}
+softwaredatalong <- gather(software_props_site, key="measure", value="value", c("linkedin_proportion", "indeed_proportion", "simplyhired_proportion", "monster_proportion"))
+
+softwaredatalong$Keyword<- factor(softwaredatalong$Keyword, levels= software_props_site$Keyword[order(software_props_site$linkedin_proportion)])
+
+ggplot(softwaredatalong, aes(x=Keyword, y=value))+
+  geom_bar(stat='identity', fill="forest green")+
+  facet_wrap(~measure) +
+  theme(axis.text.x = element_text(angle = 90, size = 6))
+
 ```
 
 
